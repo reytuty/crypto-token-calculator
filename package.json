@@ -5,6 +5,10 @@
   "main": "dist/index.js",
   "module": "dist/index.js",
   "types": "dist/index.d.ts",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/reytuty/crypto-token-calculator.git"
+  },
   "scripts": {
     "prepublish": "rm -rf dist/ && npm run build",
     "build": "tsc",
