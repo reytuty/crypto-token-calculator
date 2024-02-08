@@ -1,6 +1,6 @@
 {
   "name": "crypto-token-calculator",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "description": "",
   "main": "dist/index.js",
   "module": "dist/index.js",
@@ -14,16 +14,14 @@
     "build": "tsc",
     "test": "jest"
   },
-  "devDependencies": {
-    "jest": "^29.7.0"
-  },
-  "author": "Renato Seiji Miawaki",
+  "devDependencies": {},
+  "author": "Renato Miawaki",
   "license": "Apache-2.0",
   "dependencies": {
     "typescript": "^4.4.3"
   },
   "engines": {
     "npm": ">=9.0.0",
-    "node": ">=20.0.0"
+    "node": ">=10.0.0"
   }
 }

@@ -1,5 +1,5 @@
 /**
- * @author: Renato Seiji Miawaki
+ * @author: Renato Miawaki
  * @description: Functions to calculate the token value and percentage
  */
 export interface TokenInfoInterface {
@@ -21,14 +21,14 @@ export interface CalcResultInterface {
  */
 export declare function calcTokenPercent(tokenInfo: TokenInfoInterface, desirePercent: number): CalcResultInterface;
 /**
- *
+ * Calculate if the token value is possible to dispend
  * @param tokenInfo info of the token
  * @param value Total desired to dispend in tokens
  * @returns CalcResultInterface
  */
 export declare function calcTokenValue(tokenInfo: TokenInfoInterface, value: number): CalcResultInterface;
 /**
- * Arredonda o valor para cima mais próximo do valor do slotUnitValue
+ * Round the value up to the nearest slotUnitValue
  * @param value
  * @param slotUnitValue
  * @returns

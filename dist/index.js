@@ -9,9 +9,10 @@ exports.round = exports.calcTokenValue = exports.calcTokenPercent = void 0;
  */
 function calcTokenPercent(tokenInfo, desirePercent) {
     var minValue = tokenInfo.minValue, availableTokens = tokenInfo.availableTokens, valuePerToken = tokenInfo.valuePerToken, slotUnitValue = tokenInfo.slotUnitValue;
-    //de 0 a 1
+    //limit between 0 to 1
+    desirePercent = Math.min(1, Math.max(0, desirePercent));
     var coust = round(Math.max(minValue, availableTokens * desirePercent), slotUnitValue);
-    //arredonda o custo para cima mais próximo do valor do slotUnitValue
+    //rounds the cost up to the nearest slotUnitValue
     var tokens = coust / valuePerToken;
     var result = {
         desirePercent: tokens / availableTokens,
@@ -22,16 +23,18 @@ function calcTokenPercent(tokenInfo, desirePercent) {
 }
 exports.calcTokenPercent = calcTokenPercent;
 /**
- *
+ * Calculate if the token value is possible to dispend
  * @param tokenInfo info of the token
  * @param value Total desired to dispend in tokens
  * @returns CalcResultInterface
  */
 function calcTokenValue(tokenInfo, value) {
     var minValue = tokenInfo.minValue, availableTokens = tokenInfo.availableTokens, valuePerToken = tokenInfo.valuePerToken, slotUnitValue = tokenInfo.slotUnitValue;
-    //de 0 a 1
+    //rounds the cost up to the nearest slotUnitValue
     var coust = round(Math.max(minValue, value), slotUnitValue);
-    //arredonda o custo para cima mais próximo do valor do slotUnitValue
+    while (coust > availableTokens * valuePerToken) {
+        coust -= slotUnitValue;
+    }
     var tokens = coust / valuePerToken;
     var result = {
         desirePercent: tokens / availableTokens,
@@ -42,7 +45,7 @@ function calcTokenValue(tokenInfo, value) {
 }
 exports.calcTokenValue = calcTokenValue;
 /**
- * Arredonda o valor para cima mais próximo do valor do slotUnitValue
+ * Round the value up to the nearest slotUnitValue
  * @param value
  * @param slotUnitValue
  * @returns
