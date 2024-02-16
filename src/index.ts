@@ -69,14 +69,16 @@ export function calcTokenValue(
   value: number
 ): CalcResultInterface {
   const { minValue, availableTokens, valuePerToken, slotUnitValue } = tokenInfo;
-
+  const availableTokensValue: number = availableTokens * valuePerToken;
   //rounds the cost up to the nearest slotUnitValue
-  let cost: number = round(Math.max(minValue, value), slotUnitValue);
-  const maxValue: number = availableTokens * valuePerToken;
-  while (cost > maxValue) {
-    cost -= slotUnitValue;
-  }
+  let cost: number = round(
+    Math.min(availableTokensValue, Math.max(minValue, value)),
+    slotUnitValue
+  );
   const tokens = cost / valuePerToken;
+  if (tokens > availableTokens) {
+    return noTokens;
+  }
   const result: CalcResultInterface = {
     desirePercent: tokens / availableTokens,
     cost,
