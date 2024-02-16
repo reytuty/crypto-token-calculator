@@ -10,10 +10,15 @@ export interface TokenInfoInterface {
 }
 export interface CalcResultInterface {
   desirePercent: number;
-  coust: number;
+  cost: number;
   tokens: number;
 }
 
+const noTokens: CalcResultInterface = {
+  desirePercent: 0,
+  cost: 0,
+  tokens: 0,
+};
 /**
  *
  * @param tokenInfo
@@ -22,22 +27,34 @@ export interface CalcResultInterface {
  */
 export function calcTokenPercent(
   tokenInfo: TokenInfoInterface,
-  desirePercent: number
+  _desirePercent: number
 ): CalcResultInterface {
   const { minValue, availableTokens, valuePerToken, slotUnitValue } = tokenInfo;
+  const availableTokenValue = availableTokens * valuePerToken;
+  if (availableTokenValue < minValue) {
+    return noTokens;
+  }
   //limit between 0 to 1
-  desirePercent = Math.min(1, Math.max(0, desirePercent));
-  let coust: number = round(
-    Math.max(minValue, availableTokens * desirePercent),
+  let desirePercent = Math.min(1, Math.max(0, _desirePercent));
+  let cost: number = round(
+    Math.max(minValue, availableTokens * valuePerToken * desirePercent),
     slotUnitValue
   );
+  if (cost > availableTokenValue) {
+    cost = availableTokenValue;
+  }
+
   //rounds the cost up to the nearest slotUnitValue
-  const tokens = coust / valuePerToken;
+  const tokens = cost / valuePerToken;
+  if (tokens > availableTokens) {
+    return noTokens;
+  }
   const result: CalcResultInterface = {
     desirePercent: tokens / availableTokens,
-    coust,
+    cost,
     tokens,
   };
+
   return result;
 }
 
@@ -54,15 +71,15 @@ export function calcTokenValue(
   const { minValue, availableTokens, valuePerToken, slotUnitValue } = tokenInfo;
 
   //rounds the cost up to the nearest slotUnitValue
-  let coust: number = round(Math.max(minValue, value), slotUnitValue);
+  let cost: number = round(Math.max(minValue, value), slotUnitValue);
   const maxValue: number = availableTokens * valuePerToken;
-  while (coust > maxValue) {
-    coust -= slotUnitValue;
+  while (cost > maxValue) {
+    cost -= slotUnitValue;
   }
-  const tokens = coust / valuePerToken;
+  const tokens = cost / valuePerToken;
   const result: CalcResultInterface = {
     desirePercent: tokens / availableTokens,
-    coust,
+    cost,
     tokens,
   };
   return result;
